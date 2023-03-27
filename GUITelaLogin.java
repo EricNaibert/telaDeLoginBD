@@ -8,16 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 
-
-
-public class GUI {
+public class GUITelaLogin {
 
 	static JFrame frame;
 	static JPanel panel;
@@ -29,9 +21,10 @@ public class GUI {
 	static JLabel labelSuccess;
 	static JButton button;
 	static String login;
+	static JButton criar;
 	static String resultSenha;
 
-	public GUI() {
+	public static void GUI() {
 
 		frame = new JFrame();
 		frame.pack();
@@ -68,67 +61,24 @@ public class GUI {
 		passwordField.setBounds(180, 165, 150, 25);
 		panel.add(passwordField);
 
+		criar = new JButton();
+		criar.setText("Criar Conta");
+		criar.setBounds(180, 235, 150, 25);
+		panel.add(criar);
+		
 		button = new JButton();
 		button.setText("Logar");
 		button.setBounds(180, 200, 150, 25);
-		ActionButton();
 		panel.add(button);
-
+		
+		Action.ActionButton();
+		
 		labelSuccess = new JLabel();
-		labelSuccess.setBounds(180, 250, 150, 25);
+		labelSuccess.setBounds(180, 260, 150, 25);
 		panel.add(labelSuccess);
-	}
-
-	public void ActionButton() {
-
-		ActionListener action = new ActionListener() {
-
-			@SuppressWarnings("deprecation")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				BD();
-
-				if(textField.getText().equals(login) && passwordField.getText().equals(resultSenha)) {
-					labelSuccess.setText("Bem Vindo!");
-				} else {
-					labelSuccess.setText("Login ou Senha Inválidos!");
-				}
-
-			}
-		};
-		button.addActionListener(action);
-	}
-
-	public static void BD() {
-		final String usuario = "postgres";
-		final String senha = "password";
-		final String url = "jdbc:postgresql://localhost:5432/postgres";
-		final String select = "SELECT * FROM cadastros";
-		final String driver = "org.postgresql.Driver";
-
-		try {
-			Class.forName(driver);
-			Connection conexao = DriverManager.getConnection(url, usuario, senha);
-			System.out.println("Conexão realizada com sucesso!");
-
-			Statement sentensa = conexao.createStatement();
-			ResultSet resultSet = sentensa.executeQuery(select);
-
-			while(resultSet.next()) {
-				login = resultSet.getString("logins");
-				resultSenha = resultSet.getString("senhas");
-			}
-
-		}catch (Exception e) {
-			System.out.println("Erro na conexão com o banco de dados!");
-		}
-	}
-
-	public static void main(String[]args) {
-		new GUI();
+		
 		frame.setVisible(true);
-
 	}
 
+	
 }
